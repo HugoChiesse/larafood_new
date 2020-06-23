@@ -7,7 +7,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="fas fa-home"></i></a></li>
         <li class="breadcrumb-item"><a href="{{ route('plans.index') }}">Planos</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Visualizar</li>
+        <li class="breadcrumb-item active" aria-current="page">Editar</li>
     </ol>
 </nav>
 <h1>{{ $title }}</h1>

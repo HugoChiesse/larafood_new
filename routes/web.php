@@ -17,3 +17,6 @@ Route::get('admin', 'Admin\HomeController@index')->name('home');
 
 Route::any('admin/plans/search', 'Admin\PlanController@search')->name('plans.search');
 Route::resource('admin/plans', 'Admin\PlanController');
+
+Route::any('admin/profiles/search', 'Admin\ProfileController@search')->name('profiles.search');
+Route::resource('admin/profiles', 'Admin\ProfileController');

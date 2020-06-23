@@ -10,7 +10,7 @@
     </ol>
 </nav>
 
-<h1>Plano <a href="{{ route('plans.create') }}" class="btn btn-dark">Add</a></h1>
+<h1>{{ $title }} <a href="{{ route('plans.create') }}" class="btn btn-dark">Add</a></h1>
 
 @stop
 

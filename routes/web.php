@@ -20,3 +20,6 @@ Route::resource('admin/plans', 'Admin\PlanController');
 
 Route::any('admin/profiles/search', 'Admin\ProfileController@search')->name('profiles.search');
 Route::resource('admin/profiles', 'Admin\ProfileController');
+
+Route::any('admin/permissions/search', 'Admin\PermissionController@search')->name('permissions.search');
+Route::resource('admin/permissions', 'Admin\PermissionController');

@@ -47,9 +47,7 @@ class PlanController extends Controller
      */
     public function store(PlanRequest $request)
     {
-        $data = $request->all();
-        $data['url'] = Str::kebab($request->name);
-        $this->repository->create($data);
+        $this->repository->create($request->all());
         return redirect()->route('plans.index')->with('success', 'Plano cadastrado com sucesso!');
     }
 

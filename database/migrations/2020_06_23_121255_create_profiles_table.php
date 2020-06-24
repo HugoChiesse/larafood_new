@@ -19,7 +19,17 @@ class CreateProfilesTable extends Migration
             $table->string('description')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('plan_profile', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('plan_id');
+            $table->unsignedBigInteger('profile_id');
+
+            $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
+            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
+        });
     }
+    
 
     /**
      * Reverse the migrations.
@@ -28,6 +38,7 @@ class CreateProfilesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('plan_profile');
         Schema::dropIfExists('profiles');
     }
 }

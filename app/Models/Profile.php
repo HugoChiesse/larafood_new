@@ -15,6 +15,11 @@ class Profile extends Model
         return $this->where('name', 'like', "%{$filter}%")->orWhere('description', 'like', "%{$filter}%")->orderBy('name')->paginate();
     }
 
+    public function plans()
+    {
+        return $this->belongsToMany(Plan::class);
+    }
+
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);

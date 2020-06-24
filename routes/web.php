@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-route::prefix('admin')->namespace('Admin')->group(function () {
+route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
 
     Route::any('plans/search', 'PlanController@search')->name('plans.search');
@@ -24,6 +25,19 @@ route::prefix('admin')->namespace('Admin')->group(function () {
 
     Route::any('permissions/search', 'PermissionController@search')->name('permissions.search');
     Route::resource('permissions', 'PermissionController');
+
+    /**
+     * PLAN X PROFILE
+     */
+    Route::get('plans/{idPlan}/profiles', 'ACL\PlanProfileController@profiles')->name('plans.profiles');
+    Route::any('plans/{idPlan}/profiles/create', 'ACL\PlanProfileController@createProfile')->name('plans.createProfile');
+    Route::post('plans/{idPlan}/profiles/store', 'ACL\PlanProfileController@storeProfile')->name('plans.storeProfile');
+    Route::get('plans/{idPlan}/profiles/{idProfile}/remove', 'ACL\PlanProfileController@removeProfile')->name('plans.removeProfile');
+
+    /**
+     * PROFILE X PLAN
+     */
+    Route::get('profiles/{idProfile}/plans', 'ACL\ProfilePlanController@plans')->name('profiles.plans');
 
     /**
      * PROFILE X PERMISSION
@@ -38,3 +52,5 @@ route::prefix('admin')->namespace('Admin')->group(function () {
      */
     Route::get('permissions/{idPermission}/profiles', 'ACL\PermissionProfileController@profile')->name('permissions.profiles');
 });
+
+Auth::routes();

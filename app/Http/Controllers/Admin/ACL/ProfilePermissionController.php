@@ -32,7 +32,7 @@ class ProfilePermissionController extends Controller
         if (!$profile = $this->profile->find($idProfile)) {
             return redirect()->back()->with('warning', 'Não foi possível associar a permissão ao perfil, tente mais tarde.');
         }
-        $title = "Permissões Disponíveis Para o Perfil: {$profile->name}";
+        $title = "Permissões Disponíveis Para o Perfil: |{$profile->name}|";
         $filters = $request->except('_token');
         $permissions = $profile->permissionNotAttach($request->filter);
         return view('admin.pages.profiles.permissions.createPermission', compact('title', 'permissions', 'profile', 'filters'));

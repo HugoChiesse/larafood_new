@@ -6,18 +6,19 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="fas fa-home"></i></a></li>
-        <li class="breadcrumb-item active" aria-current="page">Planos</li>
+        <li class="breadcrumb-item"><a href="{{ route('profiles.index') }}">Perfis</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Planos Vinculados ao Perfil</li>
     </ol>
 </nav>
 
-<h1>{{ $title }} <a href="{{ route('plans.create') }}" class="btn btn-dark">Add</a></h1>
+<h1>{{ $title }} </h1>
 
 @stop
 
 @section('content')
 <div class="card">
     <div class="card-header">
-        <form action="{{ route('plans.search') }}" method="post" class="form form-inline">
+        <form action="" method="post" class="form form-inline">
             @csrf
             <input type="text" name="filter" placeholder="Nome:" class="form-control"> &nbsp;
             <button type="submit" class="btn btn-dark">Filtar</button>
@@ -30,19 +31,16 @@
             <thead>
                 <tr>
                     <th>Nome</th>
-                    <th>Preço</th>
-                    <th width="250px">Ações</th>
+                    <th width="150px">Ações</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($plans as $plan)
                 <tr>
                     <td>{{ $plan->name }}</td>
-                    <td>{{ number_format($plan->price, 2, ',', '.') }}</td>
                     <td>
-                        <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-warning">Ver</a>
-                        <a href="{{ route('plans.edit', $plan->id) }}" class="btn btn-primary">Editar</a>
-                        <a href="{{ route('plans.profiles', $plan->id) }}" class="btn btn-dark">Perfis</a>
+                        <a href="{{ route('plans.removeProfile', [$plan->id, $profile->id]) }}"
+                            class="btn btn-danger">Desvincular</a>
                     </td>
                 </tr>
                 @endforeach

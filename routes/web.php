@@ -13,13 +13,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('admin', 'Admin\HomeController@index')->name('home');
+route::prefix('admin')->namespace('Admin')->group(function () {
+    Route::get('/', 'HomeController@index')->name('home');
 
-Route::any('admin/plans/search', 'Admin\PlanController@search')->name('plans.search');
-Route::resource('admin/plans', 'Admin\PlanController');
+    Route::any('plans/search', 'PlanController@search')->name('plans.search');
+    Route::resource('plans', 'PlanController');
 
-Route::any('admin/profiles/search', 'Admin\ProfileController@search')->name('profiles.search');
-Route::resource('admin/profiles', 'Admin\ProfileController');
+    Route::any('profiles/search', 'ProfileController@search')->name('profiles.search');
+    Route::resource('profiles', 'ProfileController');
 
-Route::any('admin/permissions/search', 'Admin\PermissionController@search')->name('permissions.search');
-Route::resource('admin/permissions', 'Admin\PermissionController');
+    Route::any('permissions/search', 'PermissionController@search')->name('permissions.search');
+    Route::resource('permissions', 'PermissionController');
+
+    /**
+     * PROFILE X PERMISSION
+     */
+    Route::get('profiles/{idProfile}/permissions', 'ACL\ProfilePermissionController@permissions')->name('profiles.permissions');
+    Route::any('profiles/{idProfile}/permissions/create', 'ACL\ProfilePermissionController@createPermission')->name('profiles.createPermission');
+    Route::post('profiles/{idProfile}/permissions/store', 'ACL\ProfilePermissionController@storePermission')->name('profiles.storePermission');
+    Route::get('profiles/{idProfile}/permissions/{idPermission}/remove', 'ACL\ProfilePermissionController@removePermission')->name('profiles.removePermission');
+
+    /**
+     * PERMISSION X PROFILE
+     */
+    Route::get('permissions/{idPermission}/profiles', 'ACL\PermissionProfileController@profile')->name('permissions.profiles');
+});

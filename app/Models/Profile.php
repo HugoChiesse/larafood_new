@@ -14,4 +14,26 @@ class Profile extends Model
     {
         return $this->where('name', 'like', "%{$filter}%")->orWhere('description', 'like', "%{$filter}%")->orderBy('name')->paginate();
     }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function permissionNotAttach($filter = '')
+    {
+        $permissions = Permission::whereNotIn('id', function ($query) {
+            $query->select('permission_profile.permission_id')
+                ->from('permission_profile')
+                ->whereRaw("permission_profile.profile_id={$this->id}");
+        })
+            ->where(function ($queryFilter) use ($filter) {
+                if ($filter) {
+                    $queryFilter->where('permissions.name', 'like', "%{$filter}%");
+                }
+            })
+            ->orderBy('name')
+            ->paginate();
+        return $permissions;
+    }
 }

@@ -6,18 +6,19 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="fas fa-home"></i></a></li>
-        <li class="breadcrumb-item active" aria-current="page">Perfis</li>
+        <li class="breadcrumb-item"><a href="{{ route('permissions.index') }}">Permissões</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Perfis Vinculados a Permissão</li>
     </ol>
 </nav>
 
-<h1>{{ $title }} <a href="{{ route('profiles.create') }}" class="btn btn-dark">Add</a></h1>
+<h1>{{ $title }} <a href="" class="btn btn-dark">Add</a></h1>
 
 @stop
 
 @section('content')
 <div class="card">
     <div class="card-header">
-        <form action="{{ route('profiles.search') }}" method="post" class="form form-inline">
+        <form action="" method="post" class="form form-inline">
             @csrf
             <input type="text" name="filter" placeholder="Nome:" class="form-control"> &nbsp;
             <button type="submit" class="btn btn-dark">Filtar</button>
@@ -30,7 +31,7 @@
             <thead>
                 <tr>
                     <th>Nome</th>
-                    <th width="250px">Ações</th>
+                    <th width="150px">Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,9 +39,7 @@
                 <tr>
                     <td>{{ $profile->name }}</td>
                     <td>
-                        <a href="{{ route('profiles.show', $profile->id) }}" class="btn btn-warning">Ver</a>
-                        <a href="{{ route('profiles.edit', $profile->id) }}" class="btn btn-primary">Editar</a>
-                        <a href="{{ route('profiles.permissions', $profile->id) }}" class="btn btn-dark">Permissões</a>
+                        <a href="{{ route('profiles.removePermission', [$profile->id, $permission->id]) }}" class="btn btn-danger">Desvincular</a>
                     </td>
                 </tr>
                 @endforeach

@@ -19,6 +19,15 @@ class CreatePermissionsTable extends Migration
             $table->string('description')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('permission_profile', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('profile_id');
+            $table->unsignedBigInteger('permission_id');
+
+            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
+            $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');
+        });
     }
 
     /**
@@ -28,6 +37,7 @@ class CreatePermissionsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('permission_profile');
         Schema::dropIfExists('permissions');
     }
 }

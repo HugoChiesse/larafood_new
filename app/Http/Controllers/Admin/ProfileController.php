@@ -126,4 +126,6 @@ class ProfileController extends Controller
         $profiles = $this->repository->search($request->filter);
         return view('admin.pages.profiles.index', compact('title', 'profiles'));
     }
+
+    
 }

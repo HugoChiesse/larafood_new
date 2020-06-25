@@ -10,6 +10,11 @@ class Plan extends Model
         'name', 'url', 'price', 'description'
     ];
 
+    public function details()
+    {
+        return $this->hasMany(DetailPlan::class);
+    }
+
     public function profiles()
     {
         return $this->belongsToMany(Profile::class);

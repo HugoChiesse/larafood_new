@@ -27,6 +27,17 @@ route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function (
     Route::resource('permissions', 'PermissionController');
 
     /**
+     * Details Plan
+     */
+    Route::get('plans/{idPlan}/details', 'DetailPlanController@index')->name('details.index');
+    Route::get('plans/{idPlan}/details/create', 'DetailPlanController@create')->name('details.create');
+    Route::post('plans/{idPlan}/details/store', 'DetailPlanController@store')->name('details.store');
+    Route::get('plans/{idPlan}/details/{idDetail}/show', 'DetailPlanController@show')->name('details.show');
+    Route::get('plans/{idPlan}/details/{idDetail}/edit', 'DetailPlanController@edit')->name('details.edit');
+    Route::put('plans/{idPlan}/details/{idDetail}/update', 'DetailPlanController@update')->name('details.update');
+    Route::delete('plans/{idPlan}/details/{idDetail}/destroy', 'DetailPlanController@destroy')->name('details.destroy');
+
+    /**
      * PLAN X PROFILE
      */
     Route::get('plans/{idPlan}/profiles', 'ACL\PlanProfileController@profiles')->name('plans.profiles');
@@ -53,4 +64,5 @@ route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function (
     Route::get('permissions/{idPermission}/profiles', 'ACL\PermissionProfileController@profile')->name('permissions.profiles');
 });
 
+Route::get('/', 'Site\HomeController@index')->name('home');
 Auth::routes();

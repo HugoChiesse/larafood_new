@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
@@ -16,8 +17,19 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'tenant_id', 'name', 'email', 'password',
     ];
+
+    /**
+     * Scope a query to only include popular users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeTenantUser(Builder $query)
+    {
+        return $query->where('tenant_id', auth()->user()->tenant_id);
+    }
 
     public function tenant()
     {
@@ -41,4 +53,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function search($filter)
+    {
+        return $this->where('name', 'lik', "%{$filter}%")->orderBy('name')->tenantUser()->paginate();
+    }
 }

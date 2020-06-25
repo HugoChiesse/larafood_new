@@ -26,8 +26,8 @@ route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function (
     Route::any('permissions/search', 'PermissionController@search')->name('permissions.search');
     Route::resource('permissions', 'PermissionController');
 
-    // Route::any('users/search', 'UserController@search')->name('users.search');
-    // Route::resource('users', 'UserController');
+    Route::any('users/search', 'UserController@search')->name('users.search');
+    Route::resource('users', 'UserController');
 
     /**
      * Details Plan

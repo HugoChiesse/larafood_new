@@ -11,11 +11,47 @@
     @php( $register_url = $register_url ? url($register_url) : '' )
 @endif
 
-@section('auth_header', __('adminlte::adminlte.register_message'))
+@section('auth_header')
 
 @section('auth_body')
-    <form action="{{ $register_url }}" method="post">
+
+<p><strong>Plano: </strong>{{ session('plan')->name ?? ':/' }}</p>
+<hr>
+
+    <form action="{{ route('register') }}" method="post">
         {{ csrf_field() }}
+
+        {{-- Empresa --}}
+        <div class="input-group mb-3">
+            <input type="text" name="empresa" class="form-control {{ $errors->has('empresa') ? 'is-invalid' : '' }}"
+                   value="{{ old('empresa') }}" placeholder="Empresa:" autofocus>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-building {{ config('adminlte.classes_auth_icon', '') }}"></span>
+                </div>
+            </div>
+            @if($errors->has('empresa'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('empresa') }}</strong>
+                </div>
+            @endif
+        </div>
+
+        {{-- CNPJ --}}
+        <div class="input-group mb-3">
+            <input type="text" name="cnpj" class="form-control {{ $errors->has('cnpj') ? 'is-invalid' : '' }}"
+                   value="{{ old('cnpj') }}" placeholder="CNPJ:" autofocus>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-id-card {{ config('adminlte.classes_auth_icon', '') }}"></span>
+                </div>
+            </div>
+            @if($errors->has('cnpj'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('cnpj') }}</strong>
+                </div>
+            @endif
+        </div>
 
         {{-- Name field --}}
         <div class="input-group mb-3">

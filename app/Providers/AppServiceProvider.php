@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Plan;
+use App\Models\Tenant;
 use App\Observers\PlanObserver;
+use App\Observers\TenantObserver;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,5 +29,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Plan::observe(PlanObserver::class);
+        Tenant::observe(TenantObserver::class);
     }
 }

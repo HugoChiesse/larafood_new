@@ -26,6 +26,9 @@ route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function (
     Route::any('permissions/search', 'PermissionController@search')->name('permissions.search');
     Route::resource('permissions', 'PermissionController');
 
+    // Route::any('users/search', 'UserController@search')->name('users.search');
+    // Route::resource('users', 'UserController');
+
     /**
      * Details Plan
      */
@@ -65,4 +68,5 @@ route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function (
 });
 
 Route::get('/', 'Site\HomeController@index')->name('home');
+Route::get('/plan/{url}', 'Site\HomeController@plan')->name('home.subscription');
 Auth::routes();

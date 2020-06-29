@@ -11,7 +11,7 @@
     </ol>
 </nav>
 
-<h1>{{ $title }} <a href="{{ route('plans.createProfile', $plan->id) }}" class="btn btn-dark">Add Novo Perfil</a></h1>
+<h1>{{ $title }} <a href="{{ route('plans.profiles.available', $plan->id) }}" class="btn btn-dark">Add Novo Perfil</a></h1>
 
 @stop
 
@@ -39,7 +39,7 @@
                 <tr>
                     <td>{{ $profile->name }}</td>
                     <td>
-                        <a href="{{ route('plans.removeProfile', [$plan->id, $profile->id]) }}"
+                        <a href="{{ route('plans.profile.detach', [$plan->id, $profile->id]) }}"
                             class="btn btn-danger">Desvincular</a>
                     </td>
                 </tr>

@@ -30,20 +30,22 @@ class Plan extends Model
         return $this->where('name', 'like', "%{$filter}%")->orWhere('description', 'like', "%{$filter}%")->orderBy('name')->paginate();
     }
 
-    public function profilesNotAttach($filter = '')
+    /**
+     * Profiles not linked with this plan
+     */
+    public function profilesAvailable($filter = null)
     {
-        $profiles = Profile::whereNotIn('id', function ($query) {
-            $query->select('plan_profile.profile_id')
-                ->from('plan_profile')
-                ->whereRaw("plan_profile.plan_id={$this->id}");
+        $profiles = Profile::whereNotIn('profiles.id', function ($query) {
+            $query->select('plan_profile.profile_id');
+            $query->from('plan_profile');
+            $query->whereRaw("plan_profile.plan_id={$this->id}");
         })
             ->where(function ($queryFilter) use ($filter) {
-                if ($filter) {
-                    $queryFilter->where('profiles.name', 'like', "%{$filter}%");
-                }
+                if ($filter)
+                    $queryFilter->where('profiles.name', 'LIKE', "%{$filter}%");
             })
-            ->orderBy('name')
             ->paginate();
+
         return $profiles;
     }
 }

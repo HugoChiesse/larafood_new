@@ -11,7 +11,7 @@
     </ol>
 </nav>
 
-<h1>{{ $title }} <a href="{{ route('profiles.createPermission', $profile->id) }}" class="btn btn-dark">Add Nova Permissão</a></h1>
+<h1>{{ $title }} <a href="{{ route('profiles.permissions.available', $profile->id) }}" class="btn btn-dark">Add Nova Permissão</a></h1>
 
 @stop
 
@@ -39,7 +39,7 @@
                 <tr>
                     <td>{{ $permission->name }}</td>
                     <td>
-                        <a href="{{ route('profiles.removePermission', [$profile->id, $permission->id]) }}" class="btn btn-danger">Desvincular</a>
+                        <a href="{{ route('profiles.permission.detach', [$profile->id, $permission->id]) }}" class="btn btn-danger">Desvincular</a>
                     </td>
                 </tr>
                 @endforeach

@@ -6,10 +6,10 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="fas fa-home"></i></a></li>
-        <li class="breadcrumb-item"><a href="{{ route('plans.index') }}">Plano</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('plans.profiles', $plan->id) }}">Perfis do Plano</a>
+        <li class="breadcrumb-item"><a href="{{ route('profiles.index') }}">Perfis</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('profiles.permissions', $profile->id) }}">Permissões do Perfil</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">Associar Perfil ao Plano</li>
+        <li class="breadcrumb-item active" aria-current="page">Associar Permissão ao Perfil</li>
     </ol>
 </nav>
 
@@ -19,7 +19,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <form action="{{ route('plans.createProfile', $plan->id) }}" method="post" class="form form-inline">
+        <form action="{{ route('profiles.permissions.available', $profile->id) }}" method="post" class="form form-inline">
             @csrf
             <input type="text" name="filter" placeholder="Nome:" class="form-control"> &nbsp;
             <button type="submit" class="btn btn-dark">Filtar</button>
@@ -36,15 +36,15 @@
                 </tr>
             </thead>
             <tbody>
-                <form action="{{ route('plans.storeProfile', $plan->id) }}" method="post">
+                <form action="{{ route('profiles.permissions.attach', $profile->id) }}" method="post">
                     @csrf
-                    @foreach ($profiles as $profile)
+                    @foreach ($permissions as $permission)
                     <tr>
                         <td>
-                            <input type="checkbox" name="profiles[]" value="{{ $profile->id }}" id="profiles"
+                            <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" id="permissions"
                                 class="form-control">
                         </td>
-                        <td>{{ $profile->name }}</td>
+                        <td>{{ $permission->name }}</td>
                     </tr>
                     @endforeach
                     <tr>
@@ -58,9 +58,9 @@
     </div>
     <div class="card-footer">
         @if (isset($filters))
-        {!! $profiles->appends($filters)->links() !!}
+        {!! $permissions->appends($filters)->links() !!}
         @else
-        {!! $profiles->links() !!}
+        {!! $permissions->links() !!}
         @endif
     </div>
 </div>

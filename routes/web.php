@@ -15,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function () {
+
+    Route::get('/teste', function(){
+        // dd(auth()->user()->permissions()); // ==> Verifica a permissão do plano
+        dd(auth()->user()->hasPermission('permissions')); // ==> Verifica a permissão do usuário
+        // dd(auth()->user()->isAdmin()); // ==> Verifica se o e-mail cadastrado é um administrador
+        // dd(auth()->user()->isTenant()); // ==> Verifica se o e-mail cadastrado não é um administrador
+    });
+
     Route::get('/', 'HomeController@index')->name('home');
 
     Route::any('plans/search', 'PlanController@search')->name('plans.search');
@@ -58,30 +66,22 @@ route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function (
     Route::delete('plans/{idPlan}/details/{idDetail}/destroy', 'DetailPlanController@destroy')->name('details.destroy');
 
     /**
-     * PLAN X PROFILE
+     * Plan x Profile
      */
-    Route::get('plans/{idPlan}/categories', 'ACL\PlanProfileController@profiles')->name('plans.profiles');
-    Route::any('plans/{idPlan}/profiles/create', 'ACL\PlanProfileController@createProfile')->name('plans.createProfile');
-    Route::post('plans/{idPlan}/profiles/store', 'ACL\PlanProfileController@storeProfile')->name('plans.storeProfile');
-    Route::get('plans/{idPlan}/profiles/{idProfile}/remove', 'ACL\PlanProfileController@removeProfile')->name('plans.removeProfile');
+    Route::get('plans/{id}/profile/{idProfile}/detach', 'ACL\PlanProfileController@detachProfilePlan')->name('plans.profile.detach');
+    Route::post('plans/{id}/profiles', 'ACL\PlanProfileController@attachProfilesPlan')->name('plans.profiles.attach');
+    Route::any('plans/{id}/profiles/create', 'ACL\PlanProfileController@profilesAvailable')->name('plans.profiles.available');
+    Route::get('plans/{id}/profiles', 'ACL\PlanProfileController@profiles')->name('plans.profiles');
+    Route::get('profiles/{id}/plans', 'ACL\PlanProfileController@plans')->name('profiles.plans');
 
     /**
-     * PROFILE X PLAN
+     * Permission x Profile
      */
-    Route::get('profiles/{idProfile}/plans', 'ACL\ProfilePlanController@plans')->name('profiles.plans');
-
-    /**
-     * PROFILE X PERMISSION
-     */
-    Route::get('profiles/{idProfile}/permissions', 'ACL\ProfilePermissionController@permissions')->name('profiles.permissions');
-    Route::any('profiles/{idProfile}/permissions/create', 'ACL\ProfilePermissionController@createPermission')->name('profiles.createPermission');
-    Route::post('profiles/{idProfile}/permissions/store', 'ACL\ProfilePermissionController@storePermission')->name('profiles.storePermission');
-    Route::get('profiles/{idProfile}/permissions/{idPermission}/remove', 'ACL\ProfilePermissionController@removePermission')->name('profiles.removePermission');
-
-    /**
-     * PERMISSION X PROFILE
-     */
-    Route::get('permissions/{idPermission}/profiles', 'ACL\PermissionProfileController@profile')->name('permissions.profiles');
+    Route::get('profiles/{id}/permission/{idPermission}/detach', 'ACL\PermissionProfileController@detachPermissionProfile')->name('profiles.permission.detach');
+    Route::post('profiles/{id}/permissions', 'ACL\PermissionProfileController@attachPermissionsProfile')->name('profiles.permissions.attach');
+    Route::any('profiles/{id}/permissions/create', 'ACL\PermissionProfileController@permissionsAvailable')->name('profiles.permissions.available');
+    Route::get('profiles/{id}/permissions', 'ACL\PermissionProfileController@permissions')->name('profiles.permissions');
+    Route::get('permissions/{id}/profile', 'ACL\PermissionProfileController@profiles')->name('permissions.profiles');
 });
 
 Route::get('/', 'Site\HomeController@index')->name('home');

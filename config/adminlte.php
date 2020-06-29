@@ -188,7 +188,7 @@ return [
 
     'use_route_url' => false,
 
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'admin',
 
     'logout_url' => 'logout',
 
@@ -234,37 +234,44 @@ return [
         [
             'text' => 'Planos',
             'url'  => 'admin/plans',
-            'icon' => 'far fa-list-alt'
+            'icon' => 'far fa-list-alt',
+            'can'  => 'plans'
         ],
         [
             'text' => 'Perfis',
             'url'  => 'admin/profiles',
-            'icon' => 'far fa-address-book'
+            'icon' => 'far fa-address-book',
+            'can'  => 'profiles'
         ],
         [
             'text' => 'Permissões',
             'url'  => 'admin/permissions',
-            'icon' => 'fas fa-lock'
+            'icon' => 'fas fa-lock',
+            'can'  => 'permissions'
         ],
         [
             'text' => 'Usuários',
             'url'  => 'admin/users',
-            'icon' => 'fas fa-users'
+            'icon' => 'fas fa-users',
+            'can'  => 'users'
         ],
         [
             'text' => 'Categorias',
             'url'  => 'admin/categories',
-            'icon' => 'fas fa-layer-group'
+            'icon' => 'fas fa-layer-group',
+            'can'  => 'categories'
         ],
         [
             'text' => 'Produtos',
             'url'  => 'admin/products',
-            'icon' => 'fas fa-hamburger'
+            'icon' => 'fas fa-hamburger',
+            'can'  => 'products'
         ],
         [
             'text' => 'Mesa',
             'url'  => 'admin/tables',
-            'icon' => 'fas fa-tablet-alt'
+            'icon' => 'fas fa-tablet-alt',
+            'can'  => 'tables'
         ],
     ],
 

@@ -15,49 +15,79 @@ class PlanProfileController extends Controller
     {
         $this->plan = $plan;
         $this->profile = $profile;
+
+        $this->middleware(['can:plans']);
     }
 
     public function profiles($idPlan)
     {
+        $title = "Perfis do Plano";
         if (!$plan = $this->plan->find($idPlan)) {
-            return redirect()->back()->with('warning' ,'O código que informou não está associado a nenhum plano!');
+            return redirect()->back()->with('danger', 'O código do plano não consta em nossa base de dados');
         }
-        $title = "Perfil do Plano: |{$plan->name}|";
-        $profiles = $plan->profiles()->orderBy('name')->paginate();
-        return view('admin.pages.plans.profiles.profiles', compact('plan', 'title', 'profiles'));
+
+        $profiles = $plan->profiles()->paginate();
+
+        return view('admin.pages.plans.profiles.profiles', compact('plan', 'profiles', 'title'));
     }
 
-    public function createProfile(Request $request, $idPlan)
+
+    public function plans($idProfile)
+    {
+        $title = "Planos do Perfil";
+        if (!$profile = $this->profile->find($idProfile)) {
+            return redirect()->back()->with('danger', 'O código do perfil não consta em nossa base de dados');
+        }
+
+        $plans = $profile->plans()->paginate();
+
+        return view('admin.pages.profiles.plans.plans', compact('profile', 'plans','title'));
+    }
+
+
+    public function profilesAvailable(Request $request, $idPlan)
     {
         if (!$plan = $this->plan->find($idPlan)) {
-            return redirect()->back()->with('warning' ,'O código que informou não está associado a nenhum plano!');
+            return redirect()->back()->with('danger', 'O código do plano não consta em nossa base de dados');
         }
-        $title = "Perfis Diponíveis ao Plano: |{$plan->name}|";
+        $title = "Listar Perfis para o Plano |{$plan->name}|";
+
         $filters = $request->except('_token');
-        $profiles = $plan->profilesNotAttach($request->filter);
-        return view('admin.pages.plans.profiles.createProfile', compact('title', 'filters', 'profiles', 'plan'));
+
+        $profiles = $plan->profilesAvailable($request->filter);
+
+        return view('admin.pages.plans.profiles.available', compact('plan', 'profiles', 'filters', 'title'));
     }
 
-    public function storeProfile(Request $request, $idPlan)
+
+    public function attachProfilesPlan(Request $request, $idPlan)
     {
         if (!$plan = $this->plan->find($idPlan)) {
-            return redirect()->back()->with('warning', 'O código que informou não está associado a nenhum plano!');
+            return redirect()->back();
         }
-        if (!$request->profiles || count($request->profiles) === 0) {
-            return redirect()->back()->with('warning', 'Você precisa escolher pelo menos um perfil para associar ao plano!');
+
+        if (!$request->profiles || count($request->profiles) == 0) {
+            return redirect()
+                        ->back()
+                        ->with('info', 'Precisa escolher pelo menos um plano');
         }
+
         $plan->profiles()->attach($request->profiles);
-        return redirect()->route('plans.profiles', $plan->id)->with('success', 'Perfil associado ao plano com sucesso!');
+
+        return redirect()->route('plans.profiles', $plan->id);
     }
 
-    public function removeProfile($idPlan, $idProfile)
+    public function detachProfilePlan($idPlan, $idProfile)
     {
         $plan = $this->plan->find($idPlan);
         $profile = $this->profile->find($idProfile);
+
         if (!$plan || !$profile) {
-            return redirect()->back()->with('danger', 'Não existe nenhum perfil associado ao plano!');
+            return redirect()->back();
         }
+
         $plan->profiles()->detach($profile);
-        return redirect()->back()->with('success', 'A desassociação entre o plano e perfil efeturada com sucesso!');
+
+        return redirect()->route('plans.profiles', $plan->id);
     }
 }

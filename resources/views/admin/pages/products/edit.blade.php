@@ -6,7 +6,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="fas fa-home"></i></a></li>
-        <li class="breadcrumb-item"><a href="{{ route('plans.index') }}">Planos</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Produto</a></li>
         <li class="breadcrumb-item active" aria-current="page">Editar</li>
     </ol>
 </nav>
@@ -16,9 +16,11 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('plans.update', $plan->id) }}" class="form" method="post">
+        @include('admin.includes.alerts')
+        
+        <form action="{{ route('products.update', $product->id) }}" class="form" method="post" enctype="multipart/form-data">
             @method('put')
-            @include('admin.pages.plans._partials.form')
+            @include('admin.pages.products._partials.form')
         </form>
     </div>
 </div>

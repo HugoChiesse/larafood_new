@@ -17,8 +17,6 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        @include('admin.includes.alerts')
-        
         <form action="{{ route('plans.store') }}" class="form" method="post">
             @include('admin.pages.plans._partials.form')
         </form>

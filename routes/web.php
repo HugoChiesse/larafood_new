@@ -29,6 +29,20 @@ route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function (
     Route::any('users/search', 'UserController@search')->name('users.search');
     Route::resource('users', 'UserController');
 
+    Route::any('categories/search', 'CategoryController@search')->name('categories.search');
+    Route::resource('categories', 'CategoryController');
+
+    Route::any('products/search', 'ProductController@search')->name('products.search');
+    Route::resource('products', 'ProductController');
+
+    /**
+     * PRODUCT X CATEGORY
+     */
+    Route::get('products/{idProduct}/categories', 'ACL\CategoryProductController@categories')->name('products.categories');
+    Route::any('products/{idProduct}/categories/create', 'ACL\CategoryProductController@createCategory')->name('products.createCategory');
+    Route::post('products/{idProduct}/categories/store', 'ACL\CategoryProductController@storeCategory')->name('products.storeCategory');
+    Route::get('products/{idProduct}/categories/{idCategory}/remove', 'ACL\CategoryProductController@removeCategory')->name('products.removeCategory');
+
     /**
      * Details Plan
      */
@@ -43,7 +57,7 @@ route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function (
     /**
      * PLAN X PROFILE
      */
-    Route::get('plans/{idPlan}/profiles', 'ACL\PlanProfileController@profiles')->name('plans.profiles');
+    Route::get('plans/{idPlan}/categories', 'ACL\PlanProfileController@profiles')->name('plans.profiles');
     Route::any('plans/{idPlan}/profiles/create', 'ACL\PlanProfileController@createProfile')->name('plans.createProfile');
     Route::post('plans/{idPlan}/profiles/store', 'ACL\PlanProfileController@storeProfile')->name('plans.storeProfile');
     Route::get('plans/{idPlan}/profiles/{idProfile}/remove', 'ACL\PlanProfileController@removeProfile')->name('plans.removeProfile');

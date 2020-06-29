@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PlanRequest extends FormRequest
+class TableRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class PlanRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -23,11 +23,8 @@ class PlanRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->segment(3);
         return [
-            'name' => "required|min:3|max:255|unique:plans,name,{$id},id",
-            'description' => 'nullable|min:3|max:255',
-            'price' => "required|regex:/^\d+(\.\d{1,2})?$/",
+            //
         ];
     }
 }

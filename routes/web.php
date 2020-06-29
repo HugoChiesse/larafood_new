@@ -34,6 +34,9 @@ route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function (
 
     Route::any('products/search', 'ProductController@search')->name('products.search');
     Route::resource('products', 'ProductController');
+    
+    Route::any('tables/search', 'TableController@search')->name('tables.search');
+    Route::resource('tables', 'TableController');
 
     /**
      * PRODUCT X CATEGORY

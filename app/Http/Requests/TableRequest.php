@@ -13,7 +13,7 @@ class TableRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,10 @@ class TableRequest extends FormRequest
      */
     public function rules()
     {
+        $id = $this->segment(3);
         return [
-            //
+            'identify' => ['required', 'string', 'min:3', 'max:40', "unique:tables,identify,{$id},id"],
+            'description' => ['nullable', 'string', 'min:3', 'max:191']
         ];
     }
 }

@@ -3,10 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TableRequest;
+use App\Models\Table;
 use Illuminate\Http\Request;
 
 class TableController extends Controller
 {
+    protected $repository;
+
+    public function __construct(Table $table)
+    {
+        $this->repository = $table;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +22,9 @@ class TableController extends Controller
      */
     public function index()
     {
-        //
+        $title = "Mesas";
+        $tables = $this->repository->orderBy('identify')->paginate();
+        return view('admin.pages.tables.index', compact('title', 'tables'));
     }
 
     /**
@@ -24,18 +34,20 @@ class TableController extends Controller
      */
     public function create()
     {
-        //
+        $title = "Cadastrar Nova Mesa";
+        return view('admin.pages.tables.create', compact('title'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\TableRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TableRequest $request)
     {
-        //
+        $this->repository->create($request->all());
+        return redirect()->route('tables.index')->with('success', 'Mesa cadastrada com sucesso!');
     }
 
     /**
@@ -46,7 +58,11 @@ class TableController extends Controller
      */
     public function show($id)
     {
-        //
+        if (!$table = $this->repository->find($id)) {
+            return redirect()->back()->with('danger', 'O código informado da mesa não foi localizado em nossa base de dados!');
+        }
+        $title = "Detalhes da Mesa |{$table->identify}|";
+        return view('admin.pages.tables.show', compact('title', 'table'));
     }
 
     /**
@@ -57,19 +73,27 @@ class TableController extends Controller
      */
     public function edit($id)
     {
-        //
+        if (!$table = $this->repository->find($id)) {
+            return redirect()->back()->with('danger', 'O código informado da mesa não foi localizado em nossa base de dados!');
+        }
+        $title = "Editar a Mesa |{$table->identify}|";
+        return view('admin.pages.tables.edit', compact('title', 'table'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\TableRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TableRequest $request, $id)
     {
-        //
+        if (!$table = $this->repository->find($id)) {
+            return redirect()->back()->with('danger', 'O código informado da mesa não foi localizado em nossa base de dados!');
+        }
+        $table->update($request->all());
+        return redirect()->route('tables.index')->with('success', 'Mesa atualizada com sucesso!');
     }
 
     /**
@@ -80,6 +104,10 @@ class TableController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (!$table = $this->repository->find($id)) {
+            return redirect()->back()->with('danger', 'O código informado da mesa não foi localizado em nossa base de dados!');
+        }
+        $table->delete();
+        return redirect()->route('tables.index')->with('success', 'Mesa deletada com sucesso!');
     }
 }

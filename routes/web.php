@@ -27,6 +27,9 @@ route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function (
 
     Route::resource('tenants', 'TenantController');
 
+    Route::any('roles/search', 'RoleController@search')->name('roles.search');
+    Route::resource('roles', 'RoleController');
+
     Route::any('plans/search', 'PlanController@search')->name('plans.search');
     Route::resource('plans', 'PlanController');
 
@@ -84,6 +87,24 @@ route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function (
     Route::any('profiles/{id}/permissions/create', 'ACL\PermissionProfileController@permissionsAvailable')->name('profiles.permissions.available');
     Route::get('profiles/{id}/permissions', 'ACL\PermissionProfileController@permissions')->name('profiles.permissions');
     Route::get('permissions/{id}/profile', 'ACL\PermissionProfileController@profiles')->name('permissions.profiles');
+
+    /**
+     * Permission x Role
+     */
+    Route::get('roles/{id}/permission/{idPermission}/detach', 'ACL\PermissionRoleController@detachPermissionRole')->name('roles.permission.detach');
+    Route::post('roles/{id}/permissions', 'ACL\PermissionRoleController@attachPermissionsRole')->name('roles.permissions.attach');
+    Route::any('roles/{id}/permissions/create', 'ACL\PermissionRoleController@permissionsAvailable')->name('roles.permissions.available');
+    Route::get('roles/{id}/permissions', 'ACL\PermissionRoleController@permissions')->name('roles.permissions');
+    Route::get('permissions/{id}/profile', 'ACL\PermissionRoleController@roles')->name('permissions.roles');
+
+    /**
+     * Role x User
+     */
+    Route::get('users/{id}/roles/{idRole}/detach', 'ACL\RoleUserController@detachRoleUser')->name('users.role.detach');
+    Route::post('users/{id}/roles', 'ACL\RoleUserController@attachRolesUser')->name('users.roles.attach');
+    Route::any('users/{id}/roles/create', 'ACL\RoleUserController@rolesAvailable')->name('users.roles.available');
+    Route::get('users/{id}/roles', 'ACL\RoleUserController@roles')->name('users.roles');
+    Route::get('roles/{id}/users', 'ACL\RoleUserController@users')->name('roles.users');
 });
 
 Route::get('/', 'Site\HomeController@index')->name('home');

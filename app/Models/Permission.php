@@ -10,13 +10,18 @@ class Permission extends Model
         'name', 'description'
     ];
 
-    public function search($filter)
+    public function roles()
     {
-        return $this->where('name', 'like', "%{$filter}%")->orWhere('description', 'like', "%{$filter}%")->orderBy('name')->paginate();
+        return $this->belongsToMany(Role::class);
     }
 
     public function profiles()
     {
         return $this->belongsToMany(Profile::class);
+    }
+    
+    public function search($filter)
+    {
+        return $this->where('name', 'like', "%{$filter}%")->orWhere('description', 'like', "%{$filter}%")->orderBy('name')->paginate();
     }
 }

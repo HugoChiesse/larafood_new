@@ -21,6 +21,16 @@ class User extends Authenticatable
         'tenant_id', 'name', 'email', 'password',
     ];
 
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
     /**
      * Scope a query to only include popular users.
      *
@@ -30,11 +40,6 @@ class User extends Authenticatable
     public function scopeTenantUser(Builder $query)
     {
         return $query->where('tenant_id', auth()->user()->tenant_id);
-    }
-
-    public function tenant()
-    {
-        return $this->belongsTo(Tenant::class);
     }
 
     /**
@@ -58,5 +63,25 @@ class User extends Authenticatable
     public function search($filter)
     {
         return $this->where('name', 'lik', "%{$filter}%")->orderBy('name')->tenantUser()->paginate();
+    }
+
+    /**
+     * Role not linked with this user
+     */
+    public function rolesAvailable($filter = null)
+    {
+        $roles = Role::whereNotIn('roles.id', function ($query) {
+            $query->select('role_user.role_id');
+            $query->from('role_user');
+            $query->whereRaw("role_user.role_id={$this->id}");
+        })
+            ->where(function ($queryFilter) use ($filter) {
+                if ($filter)
+                    $queryFilter->where('roles.name', 'LIKE', "%{$filter}%");
+            })
+            ->orderBy('name')
+            ->paginate();
+
+        return $roles;
     }
 }

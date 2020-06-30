@@ -238,6 +238,12 @@ return [
             'can'  => 'tenants'
         ],
         [
+            'text' => 'Cargos',
+            'url'  => 'admin/roles',
+            'icon' => 'far fa-address-card',
+            'can'  => 'roles'
+        ],
+        [
             'text' => 'Planos',
             'url'  => 'admin/plans',
             'icon' => 'far fa-list-alt',

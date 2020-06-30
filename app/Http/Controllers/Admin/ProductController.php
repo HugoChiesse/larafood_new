@@ -98,11 +98,11 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, $id)
     {
-        $data = $request->all();
         $tenant = auth()->user()->tenant;
         if (!$product = $this->repository->find($id)) {
             return redirect()->back()->with('danger', 'O código do produto informado não consta em nossa base de dados!');
         }
+        $data = $request->all();
         if ($request->hasFile('image') && $request->image->isValid()) {
             if (Storage::exists($product->image)) {
                 Storage::delete($product->image);

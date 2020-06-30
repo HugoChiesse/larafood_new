@@ -18,12 +18,14 @@ route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function (
 
     Route::get('/teste', function(){
         // dd(auth()->user()->permissions()); // ==> Verifica a permissão do plano
-        dd(auth()->user()->hasPermission('permissions')); // ==> Verifica a permissão do usuário
+        // dd(auth()->user()->hasPermission('permissions')); // ==> Verifica a permissão do usuário
         // dd(auth()->user()->isAdmin()); // ==> Verifica se o e-mail cadastrado é um administrador
         // dd(auth()->user()->isTenant()); // ==> Verifica se o e-mail cadastrado não é um administrador
     });
 
     Route::get('/', 'HomeController@index')->name('home');
+
+    Route::resource('tenants', 'TenantController');
 
     Route::any('plans/search', 'PlanController@search')->name('plans.search');
     Route::resource('plans', 'PlanController');

@@ -232,6 +232,12 @@ return [
 
     'menu' => [
         [
+            'text' => 'Empresa',
+            'url'  => 'admin/tenants',
+            'icon' => 'far fa-building',
+            'can'  => 'tenants'
+        ],
+        [
             'text' => 'Planos',
             'url'  => 'admin/plans',
             'icon' => 'far fa-list-alt',

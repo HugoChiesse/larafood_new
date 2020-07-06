@@ -14,6 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->namespace('Api')->group(function () {
+    Route::get('tenants/{uuid}', 'TenantApiController@getUuid');
+    Route::resource('tenants', 'TenantApiController');
+
+    Route::get('category/{url}', 'CategoryApiController@show');
+    Route::get('categories', 'CategoryApiController@getCategoriesByTenant');
+
+    Route::get('tables', 'TableApiController@getTablesByTenant');
+
+    Route::get('table/{identify}', 'TableApiController@show');
+    Route::get('tables', 'TableApiController@getTablesByTenant');
+
+    Route::get('products', 'ProductsApiController@productsByTenant');
+    Route::get('products/{flag}', 'ProductsApiController@show');
 });

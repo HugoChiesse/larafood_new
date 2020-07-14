@@ -33,10 +33,10 @@ class TableRepository implements TableInterface
             ->paginate();
     }
 
-    public function getTableByIdentify(string $identify)
+    public function getTableByIdentify(string $uuid)
     {
         return DB::table($this->table)
-            ->where('identify', $identify)
+            ->where('uuid', $uuid)
             ->first();
     }
 }

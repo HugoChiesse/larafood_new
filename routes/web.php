@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Client;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function () {
 
-    Route::get('/teste', function(){
+    Route::get('/teste', function () {
+        $client = Client::first();
+        $token = $client->createToken('token-name');
+        return $token->plainTextToken;
+
+
         // dd(auth()->user()->permissions()); // ==> Verifica a permissão do plano
         // dd(auth()->user()->hasPermission('permissions')); // ==> Verifica a permissão do usuário
         // dd(auth()->user()->isAdmin()); // ==> Verifica se o e-mail cadastrado é um administrador
@@ -47,7 +53,7 @@ route::prefix('admin')->namespace('Admin')->middleware('auth')->group(function (
 
     Route::any('products/search', 'ProductController@search')->name('products.search');
     Route::resource('products', 'ProductController');
-    
+
     Route::any('tables/search', 'TableController@search')->name('tables.search');
     Route::resource('tables', 'TableController');
 

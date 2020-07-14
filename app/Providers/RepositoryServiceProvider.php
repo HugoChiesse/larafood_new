@@ -5,12 +5,16 @@ namespace App\Providers;
 use App\Models\Table;
 use App\Repositories\Interfaces\{
     CategoryInterface,
+    ClientInterface,
+    OrderInterface,
     ProductInterface,
     TableInterface,
     TenantInterface
 };
 use App\Repositories\{
     CategoryRepository,
+    ClientRepository,
+    OrderRepository,
     ProductRepository,
     TableRepository,
     TenantRepository
@@ -44,6 +48,16 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ProductInterface::class,
             ProductRepository::class
+        );
+
+        $this->app->bind(
+            ClientInterface::class,
+            ClientRepository::class
+        );
+
+        $this->app->bind(
+            OrderInterface::class,
+            OrderRepository::class
         );
     }
 

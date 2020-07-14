@@ -26,9 +26,9 @@ class CategoryApiController extends Controller
         return CategoryResource::collection($categories);
     }
 
-    public function show(TenantFormRequest $request, $url)
+    public function show(TenantFormRequest $request, $identify)
     {
-        if (!$category = $this->service->getCategoryByUrl($url)) {
+        if (!$category = $this->service->getCategoryByIdentify($identify)) {
             return response()->json(['message' => 'Ctegory not found'], 404);
         }
         return new CategoryResource($category);
